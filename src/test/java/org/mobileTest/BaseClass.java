@@ -1,9 +1,13 @@
 package org.mobileTest;
 
+import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -27,8 +31,9 @@ public class BaseClass {
         service.start();
 
         UiAutomator2Options options = new UiAutomator2Options();
-        options.setDeviceName("SalimMobile");
-        options.setApp( "C:\\Users\\salim\\workspace\\Appium\\src\\test\\resources\\Android-MyDemoAppRN.1.3.0.build-244.apk");
+        options.setDeviceName("nightwatch-android-11");
+       // options.setApp( System.getProperty("user.dir") + "/src/test/resources/ApiDemos-debug.apk");
+        options.setApp( System.getProperty("user.dir") + "/src/test/resources/General-Store.apk");
 
         driver = new AndroidDriver(new URI("http://127.0.0.1:4723").toURL(), options);
        // driver.findElement(AppiumBy.accessibilityId("Preference")).click();
@@ -37,7 +42,30 @@ public class BaseClass {
 
     }
 
+    public void longPressAction(WebElement element){
+        ((JavascriptExecutor) driver).executeScript("mobile: longClickGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(), "duration", 2000
+        ));
+    }
 
+    boolean canScrollMore;
+    public void swipeDown(){
+        do {
+            canScrollMore = (Boolean) ((JavascriptExecutor) driver).executeScript("mobile: scrollGesture", ImmutableMap.of(
+                    "left", 100, "top", 100, "width", 200, "height", 200,
+                    "direction", "down",
+                    "percent", 1.0
+            ));
+        }while(canScrollMore);
+    }
+
+    public void swipeLeft(WebElement element, String direction){
+        ((JavascriptExecutor) driver).executeScript("mobile: swipeGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(),
+                "direction", direction,
+                "percent", 0.75
+        ));
+    }
     @AfterClass
     public void tearDown(){
         driver.quit();

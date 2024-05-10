@@ -20,7 +20,7 @@ public class OpenMyDemoApp {
     @Test
     public void openApp() throws MalformedURLException, URISyntaxException {
 
-        //Run the server automatially
+      //Run the server automatially
          service= new AppiumServiceBuilder().withAppiumJS(new File("C:/Users/salim/AppData/Roaming/npm/node_modules/appium/build/lib/main.js"))
                 .withIPAddress("127.0.0.1").usingPort(4723).build();
          service.start();
@@ -28,7 +28,8 @@ public class OpenMyDemoApp {
          UiAutomator2Options options= new UiAutomator2Options();
         options.setDeviceName("Pixel 4");
       //  options.setApp(System.getProperty("user.dir") + "/src/test/resources/MyDemo.apk");
-        options.setApp(System.getProperty("user.dir") + "/src/test/resources/General-Store.apk");
+     //   options.setApp(System.getProperty("user.dir") + "/src/test/resources/General-Store.apk");
+        options.setApp(System.getProperty("user.dir") + "/src/test/resources/ApiDemos-debug.apk");
 
         driver= new AndroidDriver(new URI("http://127.0.0.1:4723").toURL(), options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
